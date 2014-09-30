@@ -14,6 +14,13 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+.idea/
+lib/
+out/
+doc/
+db/
+*.iml
+
 # =========================
 # Operating System Files
 # =========================
