@@ -1,10 +1,10 @@
 package org.fbi.hmfsjm.online.service;
 
-import apps.hmfsjm.enums.VoucherStatus;
-import apps.hmfsjm.repository.MybatisManager;
-import apps.hmfsjm.repository.dao.common.CommonMapper;
-import apps.hmfsjm.repository.model.VoucherBill;
-import common.utils.StringPad;
+import org.fbi.hmfsjm.enums.VoucherStatus;
+import org.fbi.hmfsjm.helper.StringHelper;
+import org.fbi.hmfsjm.repository.MybatisManager;
+import org.fbi.hmfsjm.repository.dao.CommonMapper;
+import org.fbi.hmfsjm.repository.model.VoucherBill;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -59,19 +59,19 @@ public class Txn1500632Service {
             for (VoucherBill vb : vchList) {
                 // 单号，金额， 票据号， 状态
                 if (StringUtils.isEmpty(vb.getBillno())) {
-                    vchBuilder.append(StringPad.rightPad4ChineseToByteLength("", 24, " "));
+                    vchBuilder.append(StringHelper.rightPad4ChineseToByteLength("", 24, " "));
                 } else {
-                    vchBuilder.append(StringPad.rightPad4ChineseToByteLength(vb.getBillno(), 24, " "));
+                    vchBuilder.append(StringHelper.rightPad4ChineseToByteLength(vb.getBillno(), 24, " "));
                 }
                 if (StringUtils.isEmpty(vb.getTxnamt())) {
-                    vchBuilder.append(StringPad.rightPad4ChineseToByteLength("", 24, " "));
+                    vchBuilder.append(StringHelper.rightPad4ChineseToByteLength("", 24, " "));
                 } else {
-                    vchBuilder.append(StringPad.rightPad4ChineseToByteLength(vb.getTxnamt(), 24, " "));
+                    vchBuilder.append(StringHelper.rightPad4ChineseToByteLength(vb.getTxnamt(), 24, " "));
                 }
                 if (StringUtils.isEmpty(vb.getVchnum())) {
                     vchBuilder.append("无");
                 } else {
-                    vchBuilder.append(StringPad.rightPad4ChineseToByteLength(vb.getVchnum(), 20, ""));
+                    vchBuilder.append(StringHelper.rightPad4ChineseToByteLength(vb.getVchnum(), 20, ""));
                 }
                 if (!StringUtils.isEmpty(vb.getVchsts())) {
                     vchBuilder.append(VoucherStatus.valueOfAlias(vb.getVchsts()).getTitle());

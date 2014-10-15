@@ -1,20 +1,20 @@
 package org.fbi.hmfsjm.online.service;
 
-import apps.hmfsjm.enums.BillBookType;
-import apps.hmfsjm.enums.BillStsFlag;
-import apps.hmfsjm.gateway.client.SyncSocketClient;
-import apps.hmfsjm.gateway.domain.base.Toa;
-import apps.hmfsjm.gateway.domain.txn.Tia2001;
-import apps.hmfsjm.gateway.domain.txn.Toa2001;
-import apps.hmfsjm.repository.MybatisManager;
-import apps.hmfsjm.repository.dao.HmfsJmActMapper;
-import apps.hmfsjm.repository.dao.HmfsJmActTxnMapper;
-import apps.hmfsjm.repository.dao.HmfsJmBillMapper;
-import apps.hmfsjm.repository.model.HmfsJmAct;
-import apps.hmfsjm.repository.model.HmfsJmActExample;
-import apps.hmfsjm.repository.model.HmfsJmActTxn;
-import apps.hmfsjm.repository.model.HmfsJmBill;
-import common.utils.ObjectFieldsCopier;
+import org.fbi.hmfsjm.enums.BillBookType;
+import org.fbi.hmfsjm.enums.BillStsFlag;
+import org.fbi.hmfsjm.gateway.client.SyncSocketClient;
+import org.fbi.hmfsjm.gateway.domain.base.Toa;
+import org.fbi.hmfsjm.gateway.domain.txn.Tia2001;
+import org.fbi.hmfsjm.gateway.domain.txn.Toa2001;
+import org.fbi.hmfsjm.helper.ObjectFieldsCopier;
+import org.fbi.hmfsjm.repository.MybatisManager;
+import org.fbi.hmfsjm.repository.dao.HmfsJmActMapper;
+import org.fbi.hmfsjm.repository.dao.HmfsJmActTxnMapper;
+import org.fbi.hmfsjm.repository.dao.HmfsJmBillMapper;
+import org.fbi.hmfsjm.repository.model.HmfsJmAct;
+import org.fbi.hmfsjm.repository.model.HmfsJmActExample;
+import org.fbi.hmfsjm.repository.model.HmfsJmActTxn;
+import org.fbi.hmfsjm.repository.model.HmfsJmBill;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +26,9 @@ import java.util.List;
 
 /**
  * 1500611 缴款单缴款确认 业务逻辑 每个缴款单号对应的分户有且只有一个，销户时需将原分户删除，重新开户
+ * **** 注意缴款交易需参考计息协议 ******
+ * 开户时，记录首存日期、计息日、上次存款日为交易日期
+ * 续缴款时，更新上次存款日、计息日为交易日期
  */
 public class Txn1500611Service {
 
@@ -33,7 +36,7 @@ public class Txn1500611Service {
     private BillService billService = new BillService();
     MybatisManager manager = new MybatisManager();
 
-    public Toa process(String tellerID, String branchID, String serialNo, String billNo) {
+    public Toa process(String tellerID, String branchID, String serialNo, String billNo, String txnDate) {
 
         Tia2001 tia = new Tia2001();
         tia.BODY.PAY_BILLNO = billNo;
@@ -56,18 +59,24 @@ public class Txn1500611Service {
             HmfsJmActExample actExample = new HmfsJmActExample();
             actExample.createCriteria().andHouseAccountEqualTo(bill.getHouseAccount());
             List<HmfsJmAct> actList = actMapper.selectByExample(actExample);
-            if (actList.size() == 0) {   // 开户
+            // TODO
+            if (actList.size() == 0) {                   // 开户
                 HmfsJmAct act = new HmfsJmAct();
                 ObjectFieldsCopier.copyFields(bill, act);
                 act.setBalAmt(bill.getTxnAmt());
-                act.setIntAmt(new BigDecimal("0.00"));
-                act.setMngAmt(new BigDecimal("0.00"));
+                act.setIntAmt(new BigDecimal("0.00"));   // 利息额
+                act.setMngAmt(new BigDecimal("0.00"));   // 增值收益
+                act.setFirstDate(txnDate);               // 首存日期
+                act.setLastDepDate(txnDate);             // 上次存款日期
+                act.setIntDate(txnDate);                 // 计息日改为每次存款日期
                 actMapper.insert(act);
                 logger.info("分户开户成功，分户号:" + bill.getHouseAccount() + " 缴款单号：" + bill.getBillno());
                 // 记账明细
             } else {   // 已开户，视为续缴.
                 HmfsJmAct act = actList.get(0);
                 act.setBalAmt(act.getBalAmt().add(bill.getTxnAmt()));
+                act.setLastDepDate(txnDate);             // 上次存款日期
+                act.setIntDate(txnDate);                 // 计息日改为每次存款日期
                 actMapper.updateByPrimaryKey(act);
                 logger.info("余额更新成功，分户号:" + bill.getHouseAccount() + " 单号：" + bill.getBillno());
             }
@@ -75,6 +84,8 @@ public class Txn1500611Service {
             ObjectFieldsCopier.copyFields(bill, txn);
             txn.setActSerialNo(serialNo);
             txn.setTxnCode("2001");
+            txn.setOperDate(txnDate.substring(0, 8));
+            txn.setOperTime(txnDate.substring(8));
             txn.setBookType(BillBookType.DEPOSIT.getCode());
             HmfsJmActTxnMapper acttxnMapper = session.getMapper(HmfsJmActTxnMapper.class);
             acttxnMapper.insert(txn);

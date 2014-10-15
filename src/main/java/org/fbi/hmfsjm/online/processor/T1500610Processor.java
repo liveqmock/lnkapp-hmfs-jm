@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+// 缴款查询
 public class T1500610Processor extends AbstractTxnProcessor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -21,12 +22,12 @@ public class T1500610Processor extends AbstractTxnProcessor {
         String[] fieldArray = StringUtils.splitByWholeSeparatorPreserveAllTokens(new String(request.getRequestBody()), "|");
         // 缴款书编号
         String billNo = fieldArray[0];
-        String branchId = request.getHeader("branchId");
-        String tellerId = request.getHeader("tellerId");
+        String branchID = request.getHeader("branchId");
+        String tellerID = request.getHeader("tellerId");
 
-        logger.info("[1500610缴款书信息查询][网点号]" + branchId + "[柜员号]" + tellerId + "  [缴款书编号] " + billNo);
+        logger.info("[1500610缴款书信息查询][网点号]" + branchID + "[柜员号]" + tellerID + "  [缴款书编号] " + billNo);
         try {
-            Toa1001 toa = (Toa1001) new Txn1500610Service().process(tellerId, branchId, billNo);
+            Toa1001 toa = (Toa1001) new Txn1500610Service().process(tellerID, branchID, billNo);
             response.setResponseBody(assembleStr(toa).getBytes(THIRDPARTY_SERVER_CODING));
         } catch (Exception e) {
             logger.error("[1500610][1001][hmfsjm缴款单查询]失败", e);

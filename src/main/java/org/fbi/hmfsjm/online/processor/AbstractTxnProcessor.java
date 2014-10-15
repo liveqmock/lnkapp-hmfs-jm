@@ -14,6 +14,14 @@ import java.io.IOException;
 
 /**
  * User: :zhangxiaobo
+ * response.addHeader("version", request.getHeader("version"));
+ * response.addHeader("serialNo", request.getHeader("serialNo"));
+ * response.addHeader("txnCode", request.getHeader("txnCode"));
+ * response.addHeader("branchId", request.getHeader("branchId"));
+ * response.addHeader("tellerId", request.getHeader("tellerId"));
+ * response.addHeader("ueserId", request.getHeader("ueserId"));
+ * response.addHeader("appId", request.getHeader("appId"));
+ * response.addHeader("txnTime", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
  */
 public abstract class AbstractTxnProcessor extends Stdp10Processor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());

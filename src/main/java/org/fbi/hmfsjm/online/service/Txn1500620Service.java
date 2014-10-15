@@ -24,7 +24,7 @@ public class Txn1500620Service {
     private static final Logger logger = LoggerFactory.getLogger(Txn1500620Service.class);
     private RefundService refundService = new RefundService();
 
-    public Toa process(String tellerID, String branchID, String billNo) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
+    public Toa process(String tellerID, String branchID, String billNo, String txnDate) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
 
         Tia3001 tia = new Tia3001();
         tia.BODY.REFUND_BILLNO = billNo;
@@ -40,7 +40,7 @@ public class Txn1500620Service {
                 " 状态码：" + toa.BODY.BILL_STS_CODE +
                 " 状态说明：" + toa.BODY.BILL_STS_TITLE);
 
-        HmfsJmRefund refund = transToa3001ToRefund(tellerID, branchID, toa);
+        HmfsJmRefund refund = transToa3001ToRefund(tellerID, branchID, toa, txnDate);
         // 保存
         if (refundService.saveRefundBill(refund)) {
             return toa;
@@ -49,7 +49,7 @@ public class Txn1500620Service {
         }
     }
 
-    private HmfsJmRefund transToa3001ToRefund(String tellerID, String branchID, Toa3001 toa3001) {
+    private HmfsJmRefund transToa3001ToRefund(String tellerID, String branchID, Toa3001 toa3001, String txnDate) {
         HmfsJmRefund refund = new HmfsJmRefund();
         refund.setBillno(toa3001.BODY.REFUND_BILLNO);
         refund.setBillStsCode(toa3001.BODY.BILL_STS_CODE);
@@ -66,8 +66,8 @@ public class Txn1500620Service {
         refund.setOwner(toa3001.BODY.OWNER);
         refund.setTel(toa3001.BODY.TEL);
         refund.setReserve(toa3001.BODY.RESERVE);
-        refund.setOperDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        refund.setOperTime(new SimpleDateFormat("HHmmss").format(new Date()));
+        refund.setOperDate(txnDate.substring(0, 8));
+        refund.setOperTime(txnDate.substring(8));
         refund.setQryTxnCode("3001");
         refund.setBookType(BillBookType.REFUND.getCode());         // 记账类型 00-收款  10-退款 20-支取
         refund.setStsFlag(BillStsFlag.UNBOOK.getCode());            // 单据标志 0-未记账 1-记账未确认 2-记账已确认

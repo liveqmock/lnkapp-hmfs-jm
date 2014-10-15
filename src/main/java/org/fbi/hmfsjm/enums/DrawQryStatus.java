@@ -3,19 +3,21 @@ package org.fbi.hmfsjm.enums;
 import java.util.Hashtable;
 
 /**
- * 单据记账状态标志 000-未记账 100-已确认记账
+ * 支取单查询返回码
  */
-public enum BillStsFlag implements EnumApp {
+public enum DrawQryStatus implements EnumApp {
 
-    UNBOOK("000", "未记账"),
-    BOOKED("100", "已确认"),
-    INPUT("900", "补录");
+    VALAID("0000", "支取单有效"),
+    NO_EXIST("0001", "没有此支取单"),
+    HANDLING("0002", "支取单处于房管局审核状态"),
+    ALREADY_DRAW("0003", "已经完成支取确认"),
+    CANCELED("0004", "该支取单已经作废");
 
     private String code = null;
     private String title = null;
-    private static Hashtable<String, BillStsFlag> aliasEnums;
+    private static Hashtable<String, DrawQryStatus> aliasEnums;
 
-    BillStsFlag(String code, String title) {
+    DrawQryStatus(String code, String title) {
         this.init(code, title);
     }
 
@@ -32,7 +34,7 @@ public enum BillStsFlag implements EnumApp {
         aliasEnums.put(title, this);
     }
 
-    public static BillStsFlag valueOfAlias(String alias) {
+    public static DrawQryStatus valueOfAlias(String alias) {
         return aliasEnums.get(alias);
     }
 

@@ -1,17 +1,17 @@
 package org.fbi.hmfsjm.online.service;
 
-import apps.hmfsjm.enums.BillBookType;
-import apps.hmfsjm.enums.BillStsFlag;
-import apps.hmfsjm.gateway.client.SyncSocketClient;
-import apps.hmfsjm.gateway.domain.base.Toa;
-import apps.hmfsjm.gateway.domain.txn.Tia3002;
-import apps.hmfsjm.gateway.domain.txn.Toa3002;
-import apps.hmfsjm.repository.MybatisManager;
-import apps.hmfsjm.repository.dao.HmfsJmActMapper;
-import apps.hmfsjm.repository.dao.HmfsJmActTxnMapper;
-import apps.hmfsjm.repository.dao.HmfsJmRefundMapper;
-import apps.hmfsjm.repository.model.*;
-import common.utils.ObjectFieldsCopier;
+import org.fbi.hmfsjm.enums.BillBookType;
+import org.fbi.hmfsjm.enums.BillStsFlag;
+import org.fbi.hmfsjm.gateway.client.SyncSocketClient;
+import org.fbi.hmfsjm.gateway.domain.base.Toa;
+import org.fbi.hmfsjm.gateway.domain.txn.Tia3002;
+import org.fbi.hmfsjm.gateway.domain.txn.Toa3002;
+import org.fbi.hmfsjm.helper.ObjectFieldsCopier;
+import org.fbi.hmfsjm.repository.MybatisManager;
+import org.fbi.hmfsjm.repository.dao.HmfsJmActMapper;
+import org.fbi.hmfsjm.repository.dao.HmfsJmActTxnMapper;
+import org.fbi.hmfsjm.repository.dao.HmfsJmRefundMapper;
+import org.fbi.hmfsjm.repository.model.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ public class Txn1500621Service {
     private RefundService refundService = new RefundService();
     MybatisManager manager = new MybatisManager();
 
-    public Toa process(String tellerID, String branchID, String serialNo, String refundNo) {
+    public Toa process(String tellerID, String branchID, String serialNo, String refundNo, String txnDate) {
 
         Tia3002 tia = new Tia3002();
         tia.BODY.REFUND_BILLNO = refundNo;
@@ -72,6 +72,8 @@ public class Txn1500621Service {
             txn.setPkid(UUID.randomUUID().toString());
             txn.setActSerialNo(serialNo);
             txn.setTxnCode("3002");
+            txn.setOperDate(txnDate.substring(0, 8));
+            txn.setOperTime(txnDate.substring(8));
             txn.setBookType(BillBookType.REFUND.getCode());
             HmfsJmActTxnMapper acttxnMapper = session.getMapper(HmfsJmActTxnMapper.class);
             acttxnMapper.insert(txn);

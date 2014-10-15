@@ -36,7 +36,7 @@ public class BillService {
 
     // 保存缴款单，已存在则更新
     public boolean saveDepositBill(HmfsJmBill bill) throws IllegalAccessException {
-        if (BillQryStatus.VALAID.getCode().equals(bill.getBillStsCode())) {
+        if (BillQryStatus.VALAID.getCode().equals(bill.getBillStsCode()))  {
             SqlSession session = null;
             try {
                 session = manager.getSessionFactory().openSession();

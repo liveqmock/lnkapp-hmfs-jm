@@ -1,7 +1,7 @@
 package org.fbi.hmfsjm.gateway.domain.txn;
 
-import apps.hmfsjm.gateway.domain.base.Toa;
-import apps.hmfsjm.gateway.domain.base.xml.ToaHeader;
+import org.fbi.hmfsjm.gateway.domain.base.Toa;
+import org.fbi.hmfsjm.gateway.domain.base.xml.ToaHeader;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;

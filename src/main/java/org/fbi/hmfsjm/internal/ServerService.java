@@ -4,10 +4,6 @@ import org.fbi.hmfsjm.gateway.server.NettyServer;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
-/**
- * User: zhanrui
- * Date: 13-8-18
- */
 public final class ServerService implements Runnable {
     private static final String PID = "linking.server.hmfsjm.nettyservice";
 

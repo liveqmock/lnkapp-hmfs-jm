@@ -8,10 +8,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-/**
- * User: zhanrui
- * Date: 13-4-13
- */
 public class MessageServerHandler extends SimpleChannelInboundHandler<String> {
     private static final Logger logger = LoggerFactory.getLogger(MessageServerHandler.class);
     private static Map<String,Object> contextsMap = new ConcurrentHashMap<String,Object>();
