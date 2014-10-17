@@ -23,8 +23,10 @@ public class AppActivator implements BundleActivator {
     public void start(BundleContext context) {
         AppActivator.context = context;
 
+        // 作为服务端开启
         this.serverService = new ServerService(getBundleContext());
         this.serverService.start();
+
 
         ProcessorFactory factory = new ProcessorFactory();
         Dictionary<String, Object> properties = new Hashtable<String, Object>();

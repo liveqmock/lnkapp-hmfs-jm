@@ -32,7 +32,6 @@ public class T1500640Processor extends AbstractTxnProcessor {
         logger.info("[1500640][3003][hmfsjm支取查询][网点号]" + branchID + "[柜员号]" + tellerID
                 + "  [支取编号] " + billNo);
 
-        String serialNo = request.getHeader("serialNo");
         String txnTime = request.getHeader("txnTime");
         try {
             Toa3003 toa = (Toa3003) new Txn1500640Service().process(tellerID, branchID, billNo, txnTime);

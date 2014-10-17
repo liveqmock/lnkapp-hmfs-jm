@@ -4,5 +4,5 @@ import java.io.Serializable;
 
 public abstract class Tia implements Serializable{
 
-    protected abstract Tia getTia(String str);
+    public abstract Tia getTia(String str);
 }

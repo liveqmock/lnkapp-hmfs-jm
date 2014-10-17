@@ -29,7 +29,8 @@ public class MessageDecoder  extends ByteToMessageDecoder {
             return;
         }
 
-        byte[] decoded = new byte[dataLength];
+        byte[] decoded = new byte[dataLength - 8];
+        in.skipBytes(8);
         in.readBytes(decoded);
         String msg = null;
         try {

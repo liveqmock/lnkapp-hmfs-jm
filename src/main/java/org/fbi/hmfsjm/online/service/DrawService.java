@@ -2,10 +2,6 @@ package org.fbi.hmfsjm.online.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
-import org.fbi.hmfsjm.enums.BillStsFlag;
-import org.fbi.hmfsjm.enums.DrawQryStatus;
-import org.fbi.hmfsjm.enums.RefundQryStatus;
-import org.fbi.hmfsjm.helper.ObjectFieldsCopier;
 import org.fbi.hmfsjm.repository.MybatisManager;
 import org.fbi.hmfsjm.repository.dao.HmfsJmDrawMapper;
 import org.fbi.hmfsjm.repository.model.HmfsJmDraw;
@@ -19,7 +15,6 @@ import java.util.List;
  * 支取单处理
  */
 public class DrawService {
-    private static final Logger logger = LoggerFactory.getLogger(DrawService.class);
     MybatisManager manager = new MybatisManager();
 
     // 按单号查询支取单

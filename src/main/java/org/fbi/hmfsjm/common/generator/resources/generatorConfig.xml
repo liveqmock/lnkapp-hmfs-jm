@@ -35,7 +35,7 @@
         <!--<table schema="ibp" tableName="acttsc">-->
         <!--<property name="ignoreQualifiersAtRuntime" value="true"/>-->
         <!--</table>-->
-        <table schema="fis" tableName="hmfs_jm_draw">
+        <table schema="fis" tableName="hmfs_jm_act">
             <property name="ignoreQualifiersAtRuntime" value="true"/>
             <generatedKey column="pkid" sqlStatement="select sys_guid() from dual" identity="false"/>
         </table>

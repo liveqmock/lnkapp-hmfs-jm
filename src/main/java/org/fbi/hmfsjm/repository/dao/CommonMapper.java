@@ -2,8 +2,10 @@ package org.fbi.hmfsjm.repository.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.fbi.hmfsjm.repository.model.HmTotalAct;
 import org.fbi.hmfsjm.repository.model.VoucherBill;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /*
@@ -31,4 +33,16 @@ public interface CommonMapper {
     @Select("select  count(v.vch_num) from hmfs_jm_voucher v " +
             " where v.txn_date = #{date8} and v.vch_sts = #{vchsts} ")
     String qryVchCnt(@Param("date8") String date8, @Param("vchsts") String vchsts);
+
+    @Select(" select max(serial_No) from hmfs_jm_interest t" +
+            " where t.house_account = #{houseAct}")
+    String qryMaxSerialNo(@Param("houseAct") String houseAct);
+
+    @Select(" select count(t.house_id) hcnt, sum(t.house_area) sumArea, sum(t.bal_amt) sumAmt from HMFS_JM_ACT t" +
+            " where t.act_status = '0000'")
+    HmTotalAct qryTotalActInfo();
+
+    @Select(" select sum(t.txn_amt) txnamt from hmfs_jm_act_txn t " +
+            " where t.book_type in (#{type})")
+    BigDecimal qrySumAmtByType(@Param("type") String type);
 }

@@ -69,6 +69,7 @@ public class Txn1500611Service {
                 act.setFirstDate(txnDate);               // 首存日期
                 act.setLastDepDate(txnDate);             // 上次存款日期
                 act.setIntDate(txnDate);                 // 计息日改为每次存款日期
+                act.setFirstAmt(bill.getTxnAmt());       // 首次缴存金额
                 actMapper.insert(act);
                 logger.info("分户开户成功，分户号:" + bill.getHouseAccount() + " 缴款单号：" + bill.getBillno());
                 // 记账明细
