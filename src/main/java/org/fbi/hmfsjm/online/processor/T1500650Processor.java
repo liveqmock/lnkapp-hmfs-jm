@@ -28,7 +28,7 @@ public class T1500650Processor extends AbstractTxnProcessor {
         String branchID = request.getHeader("branchId");
         String tellerID = request.getHeader("tellerId");
 
-        List<String> acts = new ArrayList<>();
+        List<String> acts = new ArrayList<String>();
         acts.add(houseAccout);
 
         logger.info("[1500650分户信息查询][网点号]" + branchID + "[柜员号]" + tellerID + "  [分户账号] " + houseAccout);

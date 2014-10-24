@@ -30,7 +30,7 @@ public class NettyServer {
     public void run() throws Exception {
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
-        logger.info("æœåŠ¡å™¨å¼€å§‹å¯åŠ¨......");
+        logger.info("HMFSJM_¼àÌı·şÎñ¿ªÊ¼Æô¶¯......");
 
         try {
             ServerBootstrap b = new ServerBootstrap();

@@ -54,6 +54,7 @@ public class Txn5003Service {
                     }
                 }
             }
+            session.commit();
             return result;
         } finally {
             if (session != null) session.close();

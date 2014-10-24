@@ -1,11 +1,15 @@
 package org.fbi.hmfsjm.gateway.domain.txn;
 
+import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
+import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
+import com.thoughtworks.xstream.io.xml.XppDriver;
 import org.fbi.hmfsjm.gateway.domain.base.Tia;
 import org.fbi.hmfsjm.gateway.domain.base.xml.TiaHeader;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import org.fbi.hmfsjm.helper.ProjectConfigManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +21,7 @@ import java.util.List;
 
 @XStreamAlias("HMROOT")
 public class Tia5002 extends Tia {
-    public TiaHeader INFO;
+    public TiaHeader INFO = new TiaHeader();
     public Body BODY = new Body();
 
     public static class Body implements Serializable {
@@ -58,5 +62,18 @@ public class Tia5002 extends Tia {
         XStream xs = new XStream(new DomDriver());
         xs.processAnnotations(Tia5002.class);
         return (Tia5002) xs.fromXML(xml);
+    }
+
+    @Override
+    public String toString () {
+        this.INFO.TXN_CODE = "5002";
+        this.BODY.BANKUSER_ID = ProjectConfigManager.getInstance().getProperty("bank.userid");
+        this.BODY.BANK_ID = ProjectConfigManager.getInstance().getProperty("bank.id");
+        this.BODY.DETAIL_NUM = String.valueOf(this.BODY.DETAILS.size());
+        XmlFriendlyNameCoder replacer = new XmlFriendlyNameCoder("$", "_");
+        HierarchicalStreamDriver hierarchicalStreamDriver = new XppDriver(replacer);
+        XStream xs = new XStream(hierarchicalStreamDriver);
+        xs.processAnnotations(Tia5002.class);
+        return "<?xml version=\"1.0\" encoding=\"GBK\"?>" + "\n" + xs.toXML(this);
     }
 }

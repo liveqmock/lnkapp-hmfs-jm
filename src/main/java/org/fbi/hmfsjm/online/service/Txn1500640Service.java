@@ -55,7 +55,7 @@ public class Txn1500640Service {
         if (!DrawQryStatus.VALAID.getCode().equals(toa3003.BODY.BILL_STS_CODE)) {
             throw new RuntimeException("×´Ì¬£º" + toa3003.BODY.BILL_STS_CODE + toa3003.BODY.BILL_STS_TITLE);
         }
-        List<HmfsJmDraw> draws = new ArrayList<>();
+        List<HmfsJmDraw> draws = new ArrayList<HmfsJmDraw>();
         for (Toa3003.Detail detail : toa3003.BODY.DETAILS) {
             HmfsJmDraw draw = new HmfsJmDraw();
             draw.setBillno(toa3003.BODY.DRAW_BILLNO);

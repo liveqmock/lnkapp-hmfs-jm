@@ -34,6 +34,7 @@ public class Txn1500611Service {
 
     private static final Logger logger = LoggerFactory.getLogger(Txn1500611Service.class);
     private BillService billService = new BillService();
+
     MybatisManager manager = new MybatisManager();
 
     public Toa process(String tellerID, String branchID, String serialNo, String billNo, String txnDate) {
@@ -68,7 +69,7 @@ public class Txn1500611Service {
                 act.setMngAmt(new BigDecimal("0.00"));   // 增值收益
                 act.setFirstDate(txnDate);               // 首存日期
                 act.setLastDepDate(txnDate);             // 上次存款日期
-                act.setIntDate(txnDate);                 // 计息日改为每次存款日期
+                act.setIntDate(txnDate);                 // 计息日为首次存款日期
                 act.setFirstAmt(bill.getTxnAmt());       // 首次缴存金额
                 actMapper.insert(act);
                 logger.info("分户开户成功，分户号:" + bill.getHouseAccount() + " 缴款单号：" + bill.getBillno());
@@ -77,7 +78,7 @@ public class Txn1500611Service {
                 HmfsJmAct act = actList.get(0);
                 act.setBalAmt(act.getBalAmt().add(bill.getTxnAmt()));
                 act.setLastDepDate(txnDate);             // 上次存款日期
-                act.setIntDate(txnDate);                 // 计息日改为每次存款日期
+//                act.setIntDate(txnDate);
                 actMapper.updateByPrimaryKey(act);
                 logger.info("余额更新成功，分户号:" + bill.getHouseAccount() + " 单号：" + bill.getBillno());
             }

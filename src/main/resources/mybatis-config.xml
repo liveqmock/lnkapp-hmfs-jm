@@ -20,6 +20,15 @@
     </environments>
     <mappers>
         <mapper resource="org/fbi/hmfsjm/repository/mapper/CommonMapper.xml"/>
+        <mapper resource="org/fbi/hmfsjm/repository/mapper/HmfsJmActDelMapper.xml"/>
+        <mapper resource="org/fbi/hmfsjm/repository/mapper/HmfsJmActMapper.xml"/>
+        <mapper resource="org/fbi/hmfsjm/repository/mapper/HmfsJmActTxnMapper.xml"/>
+        <mapper resource="org/fbi/hmfsjm/repository/mapper/HmfsJmBillMapper.xml"/>
+        <mapper resource="org/fbi/hmfsjm/repository/mapper/HmfsJmDrawMapper.xml"/>
+        <mapper resource="org/fbi/hmfsjm/repository/mapper/HmfsJmInterestMapper.xml"/>
+        <mapper resource="org/fbi/hmfsjm/repository/mapper/HmfsJmIrtMapper.xml"/>
+        <mapper resource="org/fbi/hmfsjm/repository/mapper/HmfsJmRefundMapper.xml"/>
+        <mapper resource="org/fbi/hmfsjm/repository/mapper/HmfsJmVoucherMapper.xml"/>
     </mappers>
 
 </configuration>

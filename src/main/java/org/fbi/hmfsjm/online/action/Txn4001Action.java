@@ -20,14 +20,16 @@ public class Txn4001Action extends AbstractTxnAction {
     @Override
     public Toa process(Tia tia) throws Exception {
         Tia4001 tia4001 = (Tia4001) tia;
+
+        String bankID = ProjectConfigManager.getInstance().getProperty("bank.id");
+        if (!bankID.equals(tia4001.BODY.BANK_ID)) {
+            throw new RuntimeException(TxnRtnCode.OTHER_EXCEPTION.getCode() + "|银行ID非本行");
+        }
+
         logger.info("[4001分户信息查询]流水号：" + tia4001.INFO.REQ_SN +
                 "  银行ID：" + tia4001.BODY.BANK_ID +
                 "  分户数：" + tia4001.BODY.ACCOUNT_NUM);
 
-        String bankID = ProjectConfigManager.getInstance().getProperty("bank.id");
-        if (!bankID.equals(tia4001.BODY.BANK_ID)) {
-            throw new RuntimeException(TxnRtnCode.OTHER_EXCEPTION.getCode() + "|" + "银行ID非本行");
-        }
 
         Toa4001 toa = new Toa4001();
         toa.INFO.REQ_SN = tia4001.INFO.REQ_SN;

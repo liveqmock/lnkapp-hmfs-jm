@@ -27,6 +27,9 @@ public class AppActivator implements BundleActivator {
         this.serverService = new ServerService(getBundleContext());
         this.serverService.start();
 
+        // 启动定时计息
+        new Thread(new InterestTimer()).start();
+
 
         ProcessorFactory factory = new ProcessorFactory();
         Dictionary<String, Object> properties = new Hashtable<String, Object>();

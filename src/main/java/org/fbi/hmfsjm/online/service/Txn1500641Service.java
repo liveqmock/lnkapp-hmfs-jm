@@ -77,8 +77,8 @@ public class Txn1500641Service {
                 logger.info("[3004-支取确认-请求] 流水号：" + tia.INFO.REQ_SN + " 单号：" + tia.BODY.DRAW_BILLNO);
                 // 计息记账流水
                 CommonMapper cmnMapper = session.getMapper(CommonMapper.class);
-                String interestSerialNo = cmnMapper.qryMaxSerialNo(houseAct);
-                if(StringUtils.isEmpty(interestSerialNo)) interestSerialNo = "000001";
+                String maxSerialNo = cmnMapper.qryMaxSerialNo(houseAct);
+                String interestSerialNo = getInterestNo(maxSerialNo);
                 HmfsJmActTxn inttxn = new HmfsJmActTxn();
                 ObjectFieldsCopier.copyFields(draw, inttxn);
                 inttxn.setPkid(UUID.randomUUID().toString());
@@ -86,7 +86,8 @@ public class Txn1500641Service {
                 inttxn.setTxnCode("5002");
                 inttxn.setOperDate(txnDate.substring(0, 8));
                 inttxn.setOperTime(txnDate.substring(8));
-                BigDecimal curRate = actirtService.qryPerDayCurrentRate();    // 活期日利率
+                BigDecimal currentRate = actirtService.qryCurrentRate();    // 活期日利率
+                BigDecimal curRate = currentRate.divide(new BigDecimal("360.0"), 10, BigDecimal.ROUND_HALF_DOWN);
                 BigDecimal interAmt = txn.getTxnAmt().multiply(curRate)
                         .multiply(new BigDecimal(actirtService.daysBetween(inttxn.getOperDate(), act.getIntDate())));
                 inttxn.setBookType(BillBookType.INTEREST_DRAW_CURRENT.getCode());
@@ -105,10 +106,10 @@ public class Txn1500641Service {
                 interest.setBeforeAmt(act.getBalAmt());     // 结息前资金指结息前余额
                 BigDecimal nowBal = act.getBalAmt().subtract(draw.getTxnAmt()).add(interAmt);
                 interest.setAfterAmt(nowBal);               // 结息后资金指结息后余额
-                interest.setBeginDate(act.getIntDate());    // 计息日
-                interest.setEndDate(inttxn.getOperDate());  // 交易日
+                interest.setBeginDate(toDate10(act.getIntDate()));    // 计息日
+                interest.setEndDate(toDate10(inttxn.getOperDate()));  // 交易日
                 interest.setCapital(draw.getTxnAmt());
-                interest.setRate(curRate);
+                interest.setRate(currentRate.toString());
                 interest.setOperTime(txnDate);
                 interest.setOperId(tellerID);
                 interest.setSerialNo(interestSerialNo);
@@ -119,7 +120,7 @@ public class Txn1500641Service {
                 HmfsJmInterestMapper interestMapper = session.getMapper(HmfsJmInterestMapper.class);
                 interestMapper.insert(interest);
                 // 更新账户
-                act.setBalAmt(act.getBalAmt().subtract(draw.getTxnAmt()));
+                act.setBalAmt(nowBal);
                 act.setIntAmt(act.getIntAmt().add(interAmt));
                 if (new BigDecimal("0.00").compareTo(act.getBalAmt()) > 0) {
                     throw new RuntimeException("分户余额不足");
@@ -142,13 +143,22 @@ public class Txn1500641Service {
             }
         } catch (Exception e) {
             session.rollback();
-            String errmsg = e.getMessage();
-            if (StringUtils.isEmpty(errmsg)) {
-                throw new RuntimeException("支取失败");
-            } else
-                throw new RuntimeException(errmsg);
+            throw new RuntimeException(e);
         } finally {
             if (session != null) session.close();
+        }
+    }
+
+    private String toDate10(String date8) {
+        return date8.substring(0, 4) + "-" + date8.substring(4, 6) + "-" + date8.substring(6, 8);
+    }
+
+    private String getInterestNo(String maxNo) {
+        if(StringUtils.isEmpty(maxNo)) return "000001";
+        else {
+            int num = Integer.parseInt(maxNo);
+            num++;
+            return StringUtils.leftPad(String.valueOf(num), 6, "0");
         }
     }
 }

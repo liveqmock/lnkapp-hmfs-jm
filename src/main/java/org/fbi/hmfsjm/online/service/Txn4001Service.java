@@ -26,7 +26,7 @@ public class Txn4001Service {
         try {
             session = manager.getSessionFactory().openSession();
             HmfsJmActMapper mapper = session.getMapper(HmfsJmActMapper.class);
-            List<Toa4001.Account> records = new ArrayList<>();
+            List<Toa4001.Account> records = new ArrayList<Toa4001.Account>();
             HmfsJmActExample example = new HmfsJmActExample();
             for (String act : actNos) {
                 example.clear();

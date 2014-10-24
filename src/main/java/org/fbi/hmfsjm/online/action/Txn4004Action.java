@@ -23,7 +23,7 @@ public class Txn4004Action extends AbstractTxnAction {
     @Override
     public Toa process(Tia tia) throws Exception {
         Tia4004 tia4004 = (Tia4004) tia;
-        logger.info("[4001分户信息查询]流水号：" + tia4004.INFO.REQ_SN +
+        logger.info("[4004分户记账流水查询]流水号：" + tia4004.INFO.REQ_SN +
                 "  银行ID：" + tia4004.BODY.BANK_ID +
                 "  分户数：" + tia4004.BODY.ACCOUNT_NUM);
 

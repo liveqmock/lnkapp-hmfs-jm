@@ -30,7 +30,7 @@ public class Txn4004Service {
         try {
             session = manager.getSessionFactory().openSession();
             HmfsJmActTxnMapper mapper = session.getMapper(HmfsJmActTxnMapper.class);
-            List<Toa4004.Detail> records = new ArrayList<>();
+            List<Toa4004.Detail> records = new ArrayList<Toa4004.Detail>();
             HmfsJmActTxnExample example = new HmfsJmActTxnExample();
             for (String act : actNos) {
                 example.clear();

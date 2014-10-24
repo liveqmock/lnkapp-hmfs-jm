@@ -25,7 +25,7 @@ public class ProcessorManagerServiceImpl implements ProcessorManagerService {
         Class clazz = Class.forName(className);
         Processor processor = (Processor) clazz.newInstance();
         if (processor == null) {
-            throw new RuntimeException("涓嶅瓨鍦≒rocessor,浜ゆ槗鍙凤細" + txnCode);
+            throw new RuntimeException("不存在Processor,交易号：" + txnCode);
         }
         return processor;
     }

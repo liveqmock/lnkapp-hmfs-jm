@@ -10,7 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
- * æŠ¥æ–‡è§£ç 
+ * ±¨ÎÄ½âÂë
  */
 public class MessageDecoder  extends ByteToMessageDecoder {
     private static final Logger logger = LoggerFactory.getLogger(MessageDecoder.class);
@@ -36,9 +36,9 @@ public class MessageDecoder  extends ByteToMessageDecoder {
         try {
             msg = new String(decoded, "GBK");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("æŠ¥æ–‡è§£ç å­—ç¬¦é›†é”™è¯¯.", e);
+            throw new RuntimeException("±¨ÎÄ½âÂë×Ö·û¼¯´íÎó.", e);
         }
-        logger.info("[LNKAPP-HMFS-JM æ¥æ”¶æŠ¥æ–‡å†…å®¹ï¼š]" + msg);
+        logger.info("[LNKAPP-HMFS-JM ½ÓÊÕ±¨ÎÄÄÚÈİ£º]" + msg);
         out.add(msg);
     }
 }

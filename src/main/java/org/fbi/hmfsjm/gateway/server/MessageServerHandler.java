@@ -18,12 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MessageServerHandler extends SimpleChannelInboundHandler<String> {
     private static final Logger logger = LoggerFactory.getLogger(MessageServerHandler.class);
-    private static Map<String,Object> contextsMap = new ConcurrentHashMap<String,Object>();
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String requestBuffer) throws Exception {
         String responseBuffer = "";
-        logger.info("æœåŠ¡å™¨æ”¶åˆ°æŠ¥æ–‡ï¼š" + requestBuffer);
         byte[] bytes = requestBuffer.getBytes();
         String reqsn = "";
         String wsysid = "";
@@ -32,30 +30,30 @@ public class MessageServerHandler extends SimpleChannelInboundHandler<String> {
         String rtnMsgHeader = "";
         Toa toa = null;
         try {
-            // è§£ææŠ¥æ–‡å¤´
+            // ½âÎö±¨ÎÄÍ·
             byte[] headerBytes = new byte[64];
             System.arraycopy(bytes, 0, headerBytes, 0, headerBytes.length);
             String msgHeader = new String(headerBytes, "GBK");
-            // è§£ææŠ¥æ–‡ä½“
+            // ½âÎö±¨ÎÄÌå
             byte[] bodyBytes = new byte[bytes.length - 64];
             System.arraycopy(bytes, 64, bodyBytes, 0, bodyBytes.length);
             String msgData = new String(bodyBytes, "GBK");
-            // è¿”å›æŠ¥æ–‡åˆå§‹åŒ–
+            // ·µ»Ø±¨ÎÄ³õÊ¼»¯
             rtnMsgHeader = msgHeader.substring(0, 32);
 
-            // å¤–å›´ç³»ç»Ÿä»£ç ã€äº¤æ˜“ç ã€äº¤æ˜“æ—¥æœŸã€mac
+            // ÍâÎ§ÏµÍ³´úÂë¡¢½»Ò×Âë¡¢½»Ò×ÈÕÆÚ¡¢mac
             wsysid = msgHeader.substring(4, 14).trim().toUpperCase();
             txnCode = msgHeader.substring(14, 24).trim();
             txnDate = msgHeader.substring(24, 32).trim();
             String mac = msgHeader.substring(32);
 
-            // MD5æ ¡éªŒ
-            // Message Dataéƒ¨åˆ†åŠ ä¸Š8ä½äº¤æ˜“æ—¥æœŸåŠ ä¸Šç”¨æˆ·IDåäº§ç”Ÿçš„MD5å€¼
+            // MD5Ğ£Ñé
+            // Message Data²¿·Ö¼ÓÉÏ8Î»½»Ò×ÈÕÆÚ¼ÓÉÏÓÃ»§IDºó²úÉúµÄMD5Öµ
             String md5 = MD5Helper.getMD5String(msgData + txnDate + wsysid);
-            // éªŒè¯å¤±è´¥ è¿”å›éªŒè¯å¤±è´¥ä¿¡æ¯
+            // ÑéÖ¤Ê§°Ü ·µ»ØÑéÖ¤Ê§°ÜĞÅÏ¢
             if (!md5.equals(mac)) {
-                logger.info("MD5æ ¡éªŒä¸ä¸€è‡´ã€‚[æœåŠ¡ç«¯]:" + md5 + " [å®¢æˆ·ç«¯]:" + mac);
-                throw new RuntimeException("MD5æ ¡éªŒé”™è¯¯");
+                logger.info("MD5Ğ£Ñé²»Ò»ÖÂ¡£[·şÎñ¶Ë]:" + md5 + " [¿Í»§¶Ë]:" + mac);
+                throw new RuntimeException("MD5Ğ£Ñé´íÎó");
             }
 
             Class tiaClazz = Class.forName("org.fbi.hmfsjm.gateway.domain.txn.Tia" + txnCode);
@@ -69,7 +67,7 @@ public class MessageServerHandler extends SimpleChannelInboundHandler<String> {
             toa = action.run(tia);
 
         } catch (Exception e) {
-            // è¿”å›å¼‚å¸¸ä¿¡æ¯
+            // ·µ»ØÒì³£ĞÅÏ¢
             String exmsg = e.getMessage();
             if (exmsg == null) exmsg = TxnRtnCode.OTHER_EXCEPTION.toRtnMsg();
             else if (!exmsg.contains("|")) exmsg = TxnRtnCode.OTHER_EXCEPTION.getCode() + "|" + exmsg;
