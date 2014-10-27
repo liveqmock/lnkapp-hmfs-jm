@@ -13,11 +13,11 @@ import java.util.TimerTask;
  */
 public class InterestTimerTask extends TimerTask {
 
-    private InterestService interestService = new InterestService();
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     // 定时计息
     public void run() {
          try {
+             InterestService interestService = new InterestService();
              // 计息
              interestService.accrualInterest();
              // 发送计息明细

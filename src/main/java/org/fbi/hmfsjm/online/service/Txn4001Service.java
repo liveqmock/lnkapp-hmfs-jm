@@ -1,5 +1,6 @@
 package org.fbi.hmfsjm.online.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.fbi.hmfsjm.enums.ActStatus;
 import org.fbi.hmfsjm.gateway.domain.txn.Toa4001;
@@ -10,7 +11,9 @@ import org.fbi.hmfsjm.repository.model.HmfsJmActExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +39,7 @@ public class Txn4001Service {
                 record.HOUSE_ACCOUNT = act;
                 if (dbActs.isEmpty()) {
                     record.STATUS = ActStatus.NOT_EXIST.getCode();     // ²»´æÔÚ
+
                 } else {
                     HmfsJmAct dbact = dbActs.get(0);
                     if (ActStatus.CANCEL.getCode().equals(dbact.getActStatus())) {
@@ -48,7 +52,11 @@ public class Txn4001Service {
                         record.STANDARD = dbact.getStandard();
                         record.PAY_MONEY = dbact.getFirstAmt().toString();
                         record.BALAMT = dbact.getBalAmt().toString();
-                        record.ACCEPT_DATE = toDate10(dbact.getFirstDate());
+                        if (StringUtils.isEmpty(dbact.getFirstDate()) || dbact.getFirstDate().length() != 8) {
+                            record.ACCEPT_DATE = new SimpleDateFormat("yyyy-mm-dd").format(new Date());
+                        } else {
+                            record.ACCEPT_DATE = toDate10(dbact.getFirstDate());
+                        }
                     }
                 }
                 records.add(record);

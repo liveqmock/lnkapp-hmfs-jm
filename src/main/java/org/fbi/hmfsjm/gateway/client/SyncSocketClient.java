@@ -33,7 +33,7 @@ public class SyncSocketClient {
         is.read(lengthBytes);
         int toReadlength = Integer.parseInt(new String(lengthBytes).trim()) - 8;
         byte[] dataBytes = new byte[toReadlength];
-        byte[] bytes = new byte[64];
+     /*   byte[] bytes = new byte[64];
         int index = 0;
         int curlen = 0;
         while ((curlen = is.read(bytes)) == 64) {
@@ -42,6 +42,27 @@ public class SyncSocketClient {
         }
         if (curlen > 0) {
             System.arraycopy(bytes, 0, dataBytes, index, curlen);
+        }*/
+        try {
+            Thread.currentThread().sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int available = 0;
+        int readIndex = 0;
+
+        while (readIndex < toReadlength) {
+            int toRead = 0;
+            available = is.available();
+            if (toReadlength - readIndex >= available) {
+                toRead = available;
+            } else {
+                toRead = toReadlength - readIndex;
+            }
+            byte[] buf = new byte[toRead];
+            is.read(buf);
+            System.arraycopy(buf, 0, dataBytes, readIndex, buf.length);
+            readIndex += toRead;
         }
         return CustomCodeHandler.decode(dataBytes);
     }
