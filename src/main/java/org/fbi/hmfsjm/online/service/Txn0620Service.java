@@ -19,9 +19,9 @@ import java.util.Date;
 /**
  * 1500620 退款单查询交易 业务逻辑  每个缴款单号对应的分户有且只有一个，销户时需将原分户删除，重新开户
  */
-public class Txn1500620Service {
+public class Txn0620Service {
 
-    private static final Logger logger = LoggerFactory.getLogger(Txn1500620Service.class);
+    private static final Logger logger = LoggerFactory.getLogger(Txn0620Service.class);
     private RefundService refundService = new RefundService();
 
     public Toa process(String tellerID, String branchID, String billNo, String txnDate) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {

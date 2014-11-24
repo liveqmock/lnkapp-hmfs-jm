@@ -22,9 +22,9 @@ import java.util.List;
 /**
  * 1500640 ÷ß»°≤È—Ø
  */
-public class Txn1500640Service {
+public class Txn0640Service {
 
-    private static final Logger logger = LoggerFactory.getLogger(Txn1500640Service.class);
+    private static final Logger logger = LoggerFactory.getLogger(Txn0640Service.class);
     private DrawService drawService = new DrawService();
 
     public Toa process(String tellerID, String branchID, String billNo, String txnDate) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {

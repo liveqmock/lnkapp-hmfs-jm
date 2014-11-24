@@ -19,9 +19,9 @@ import java.util.List;
 /**
  * 1500631 票据使用和作废
  */
-public class Txn1500631Service {
+public class Txn0631Service {
 
-    private static final Logger logger = LoggerFactory.getLogger(Txn1500631Service.class);
+    private static final Logger logger = LoggerFactory.getLogger(Txn0631Service.class);
     MybatisManager manager = new MybatisManager();
 
     public boolean process(String branchID, String tellerID, String vchNo, String billNo, String vchflag) {

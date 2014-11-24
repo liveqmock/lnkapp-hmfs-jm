@@ -22,7 +22,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: LINKING :: APP :: HMFSJM
 Bundle-SymbolicName: LINKING-APP-HMFSJM
 Bundle-Version: 1.0.0
-Created-By: 1.6.0_10 (Oracle Corporation)
+Created-By: 1.7.0_10 (Oracle Corporation)
 Import-Package: org.osgi.framework,
  org.xml.sax,
  org.xml.sax.helpers,
@@ -48,6 +48,8 @@ Import-Package: org.osgi.framework,
  io.netty.channel.socket.nio,
  io.netty.handler.logging,
  io.netty.util.concurrent,
- io.netty.handler.codec
+ io.netty.handler.codec,
+ org.slf4j,
+ com.thoughtworks.xstream
 Private-Package: lib,org.fbi.hmfsjm.internal
 Tool: Bnd-1.50.0

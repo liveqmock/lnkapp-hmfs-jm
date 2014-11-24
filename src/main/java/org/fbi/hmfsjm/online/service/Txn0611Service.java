@@ -30,9 +30,9 @@ import java.util.List;
  * 开户时，记录首存日期、计息日、上次存款日为交易日期
  * 续缴款时，更新上次存款日、计息日为交易日期
  */
-public class Txn1500611Service {
+public class Txn0611Service {
 
-    private static final Logger logger = LoggerFactory.getLogger(Txn1500611Service.class);
+    private static final Logger logger = LoggerFactory.getLogger(Txn0611Service.class);
     private BillService billService = new BillService();
 
     MybatisManager manager = new MybatisManager();

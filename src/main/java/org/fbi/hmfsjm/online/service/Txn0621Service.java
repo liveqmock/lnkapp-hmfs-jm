@@ -26,9 +26,9 @@ import java.util.UUID;
 /**
  * 1500621 退款确认 业务逻辑
  */
-public class Txn1500621Service {
+public class Txn0621Service {
 
-    private static final Logger logger = LoggerFactory.getLogger(Txn1500621Service.class);
+    private static final Logger logger = LoggerFactory.getLogger(Txn0621Service.class);
     private RefundService refundService = new RefundService();
     MybatisManager manager = new MybatisManager();
 

@@ -37,7 +37,7 @@ public class Tia4001 extends Tia {
     @Override
     public Tia getTia(String xml) {
         XStream xs = new XStream(new DomDriver());
-        xs.processAnnotations(Tia4001.class);
+        xs.processAnnotations(this.getClass());
         return (Tia4001) xs.fromXML(xml);
     }
 

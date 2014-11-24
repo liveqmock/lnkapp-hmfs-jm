@@ -2,9 +2,8 @@ package org.fbi.hmfsjm.online.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.fbi.hmfsjm.enums.BillTxnStatus;
-import org.fbi.hmfsjm.enums.TxnRtnCode;
 import org.fbi.hmfsjm.gateway.domain.txn.Toa2001;
-import org.fbi.hmfsjm.online.service.Txn1500611Service;
+import org.fbi.hmfsjm.online.service.Txn0611Service;
 import org.fbi.linking.processor.ProcessorException;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorRequest;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorResponse;
@@ -14,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 // Ω…øÓ»∑»œ
-public class T1500611Processor extends AbstractTxnProcessor {
+public class T0611Processor extends AbstractTxnProcessor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -35,7 +34,7 @@ public class T1500611Processor extends AbstractTxnProcessor {
         String txnDate = request.getHeader("txnTime").substring(0, 8);
         try {
 
-            Toa2001 toa = (Toa2001) new Txn1500611Service().process(tellerID, branchID, serialNo, billNo, txnDate);
+            Toa2001 toa = (Toa2001) new Txn0611Service().process(tellerID, branchID, serialNo, billNo, txnDate);
             response.setResponseBody(assembleStr(toa).getBytes(THIRDPARTY_SERVER_CODING));
             if (!BillTxnStatus.PAYED_SECCESS.getCode().equals(toa.BODY.BILL_STS_CODE)
                     && !BillTxnStatus.CONFIRMED.getCode().equals(toa.BODY.BILL_STS_CODE)) {

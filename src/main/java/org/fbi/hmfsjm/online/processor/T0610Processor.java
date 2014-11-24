@@ -2,7 +2,7 @@ package org.fbi.hmfsjm.online.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.fbi.hmfsjm.gateway.domain.txn.Toa1001;
-import org.fbi.hmfsjm.online.service.Txn1500610Service;
+import org.fbi.hmfsjm.online.service.Txn0610Service;
 import org.fbi.linking.processor.ProcessorException;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorRequest;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorResponse;
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 // 缴款查询
-public class T1500610Processor extends AbstractTxnProcessor {
+public class T0610Processor extends AbstractTxnProcessor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -27,7 +27,7 @@ public class T1500610Processor extends AbstractTxnProcessor {
 
         logger.info("[1500610缴款书信息查询][网点号]" + branchID + "[柜员号]" + tellerID + "  [缴款书编号] " + billNo);
         try {
-            Toa1001 toa = (Toa1001) new Txn1500610Service().process(tellerID, branchID, billNo);
+            Toa1001 toa = (Toa1001) new Txn0610Service().process(tellerID, branchID, billNo);
             response.setResponseBody(assembleStr(toa).getBytes(THIRDPARTY_SERVER_CODING));
         } catch (Exception e) {
             logger.error("[1500610][1001][hmfsjm缴款单查询]失败", e);

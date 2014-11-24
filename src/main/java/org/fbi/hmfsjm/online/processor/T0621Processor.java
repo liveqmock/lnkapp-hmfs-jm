@@ -1,11 +1,8 @@
 package org.fbi.hmfsjm.online.processor;
 
 import org.apache.commons.lang.StringUtils;
-import org.fbi.hmfsjm.enums.BillTxnStatus;
-import org.fbi.hmfsjm.gateway.domain.txn.Toa3001;
 import org.fbi.hmfsjm.gateway.domain.txn.Toa3002;
-import org.fbi.hmfsjm.online.service.Txn1500620Service;
-import org.fbi.hmfsjm.online.service.Txn1500621Service;
+import org.fbi.hmfsjm.online.service.Txn0621Service;
 import org.fbi.linking.processor.ProcessorException;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorRequest;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorResponse;
@@ -14,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class T1500621Processor extends AbstractTxnProcessor {
+public class T0621Processor extends AbstractTxnProcessor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -35,7 +32,7 @@ public class T1500621Processor extends AbstractTxnProcessor {
         String txnDate = request.getHeader("txnTime");
         try {
             // 交易发起
-            Toa3002 toa = (Toa3002) new Txn1500621Service().process(tellerID, branchID, serialNo, refundNo, txnDate);
+            Toa3002 toa = (Toa3002) new Txn0621Service().process(tellerID, branchID, serialNo, refundNo, txnDate);
 
             response.setResponseBody(assembleStr(toa).getBytes(THIRDPARTY_SERVER_CODING));
         } catch (Exception e) {

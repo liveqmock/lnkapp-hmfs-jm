@@ -2,7 +2,7 @@ package org.fbi.hmfsjm.online.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.fbi.hmfsjm.gateway.domain.txn.Toa5001;
-import org.fbi.hmfsjm.online.service.Txn1500650Service;
+import org.fbi.hmfsjm.online.service.Txn0650Service;
 import org.fbi.linking.processor.ProcessorException;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorRequest;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorResponse;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // 分账户查询
-public class T1500650Processor extends AbstractTxnProcessor {
+public class T0650Processor extends AbstractTxnProcessor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -33,7 +33,7 @@ public class T1500650Processor extends AbstractTxnProcessor {
 
         logger.info("[1500650分户信息查询][网点号]" + branchID + "[柜员号]" + tellerID + "  [分户账号] " + houseAccout);
         try {
-            Toa5001 toa = (Toa5001) new Txn1500650Service().process(tellerID, branchID, acts);
+            Toa5001 toa = (Toa5001) new Txn0650Service().process(tellerID, branchID, acts);
             response.setResponseBody(assembleStr(toa).getBytes(THIRDPARTY_SERVER_CODING));
         } catch (Exception e) {
             logger.error("[1500650][5001][hmfsjm分户账号查询]失败", e);

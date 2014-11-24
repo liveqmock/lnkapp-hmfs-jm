@@ -42,14 +42,15 @@ public class Tia3003 extends Tia {
         XmlFriendlyNameCoder replacer = new XmlFriendlyNameCoder("$", "_");
         HierarchicalStreamDriver hierarchicalStreamDriver = new XppDriver(replacer);
         XStream xs = new XStream(hierarchicalStreamDriver);
-        xs.processAnnotations(Tia3001.class);
+        xs.processAnnotations(this.getClass());
         return "<?xml version=\"1.0\" encoding=\"GBK\"?>" + "\n" + xs.toXML(this);
     }
 
     @Override
     public Tia getTia(String xml) {
         XStream xs = new XStream(new DomDriver());
-        xs.processAnnotations(Tia3003.class);
+        xs.processAnnotations(this.getClass());
         return (Tia3003) xs.fromXML(xml);
     }
+
 }

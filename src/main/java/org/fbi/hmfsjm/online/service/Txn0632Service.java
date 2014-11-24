@@ -15,9 +15,9 @@ import java.util.List;
 /**
  * 1500632 票据使用情况查询
  */
-public class Txn1500632Service {
+public class Txn0632Service {
 
-    private static final Logger logger = LoggerFactory.getLogger(Txn1500632Service.class);
+    private static final Logger logger = LoggerFactory.getLogger(Txn0632Service.class);
     MybatisManager manager = new MybatisManager();
 
     public String process(String date8, String billNo) {

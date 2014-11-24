@@ -25,9 +25,9 @@ import java.util.UUID;
 /**
  * 1500641 支取确认 业务逻辑
  */
-public class Txn1500641Service {
+public class Txn0641Service {
 
-    private static final Logger logger = LoggerFactory.getLogger(Txn1500641Service.class);
+    private static final Logger logger = LoggerFactory.getLogger(Txn0641Service.class);
     private DrawService drawService = new DrawService();
     private ActirtService actirtService = new ActirtService();
     MybatisManager manager = new MybatisManager();

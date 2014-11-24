@@ -1,9 +1,8 @@
 package org.fbi.hmfsjm.online.processor;
 
 import org.apache.commons.lang.StringUtils;
-import org.fbi.hmfsjm.enums.BillTxnStatus;
 import org.fbi.hmfsjm.gateway.domain.txn.Toa3001;
-import org.fbi.hmfsjm.online.service.Txn1500620Service;
+import org.fbi.hmfsjm.online.service.Txn0620Service;
 import org.fbi.linking.processor.ProcessorException;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorRequest;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorResponse;
@@ -13,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 //	即墨房屋维修资金退款查询
-public class T1500620Processor extends AbstractTxnProcessor {
+public class T0620Processor extends AbstractTxnProcessor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -33,7 +32,7 @@ public class T1500620Processor extends AbstractTxnProcessor {
         String serialNo = request.getHeader("serialNo");
         String txnDate = request.getHeader("txnTime");
         try {
-            Toa3001 toa = (Toa3001)new Txn1500620Service().process(tellerID, branchID, billNo, txnDate);
+            Toa3001 toa = (Toa3001)new Txn0620Service().process(tellerID, branchID, billNo, txnDate);
 
             response.setResponseBody(assembleStr(toa).getBytes(THIRDPARTY_SERVER_CODING));
 

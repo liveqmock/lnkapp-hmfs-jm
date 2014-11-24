@@ -17,9 +17,9 @@ import java.util.Date;
 /**
  * 1500630 ∆±æ›¡Ï”√
  */
-public class Txn1500630Service {
+public class Txn0630Service {
 
-    private static final Logger logger = LoggerFactory.getLogger(Txn1500630Service.class);
+    private static final Logger logger = LoggerFactory.getLogger(Txn0630Service.class);
     MybatisManager manager = new MybatisManager();
 
     public boolean process(String branchID, String tellerID, long startNo, long endNo) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {

@@ -121,7 +121,9 @@ public class InterestService {
             }
             session.commit();
         } catch (Exception e) {
-            session.rollback();
+            if (session != null) {
+                session.rollback();
+            }
             throw new RuntimeException(e);
         } finally {
             if (session != null) session.close();
@@ -213,7 +215,7 @@ public class InterestService {
     }
 
     private String getInterestNo(String maxNo) {
-        if(StringUtils.isEmpty(maxNo)) return "000001";
+        if (StringUtils.isEmpty(maxNo)) return "000001";
         else {
             int num = Integer.parseInt(maxNo);
             num++;

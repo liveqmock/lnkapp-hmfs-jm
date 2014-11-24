@@ -2,10 +2,8 @@ package org.fbi.hmfsjm.online.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.fbi.hmfsjm.enums.DrawQryStatus;
-import org.fbi.hmfsjm.gateway.domain.txn.Toa3001;
 import org.fbi.hmfsjm.gateway.domain.txn.Toa3003;
-import org.fbi.hmfsjm.online.service.Txn1500620Service;
-import org.fbi.hmfsjm.online.service.Txn1500640Service;
+import org.fbi.hmfsjm.online.service.Txn0640Service;
 import org.fbi.linking.processor.ProcessorException;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorRequest;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorResponse;
@@ -13,9 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 //	即墨房屋维修资金支取查询
-public class T1500640Processor extends AbstractTxnProcessor {
+public class T0640Processor extends AbstractTxnProcessor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -34,7 +33,7 @@ public class T1500640Processor extends AbstractTxnProcessor {
 
         String txnTime = request.getHeader("txnTime");
         try {
-            Toa3003 toa = (Toa3003) new Txn1500640Service().process(tellerID, branchID, billNo, txnTime);
+            Toa3003 toa = (Toa3003) new Txn0640Service().process(tellerID, branchID, billNo, txnTime);
             response.setResponseBody(assembleStr(toa).getBytes(THIRDPARTY_SERVER_CODING));
 
         } catch (Exception e) {
@@ -45,9 +44,16 @@ public class T1500640Processor extends AbstractTxnProcessor {
 
     private String assembleStr(Toa3003 toa3003) {
         StringBuilder strBuilder = new StringBuilder();
+        BigDecimal totalAmt = new BigDecimal("0.00");
+        if (DrawQryStatus.VALAID.getCode().equals(toa3003.BODY.BILL_STS_CODE)) {
+            for (Toa3003.Detail detail : toa3003.BODY.DETAILS) {
+                totalAmt = totalAmt.add(new BigDecimal(detail.DRAW_MONEY));
+            }
+        }
         strBuilder.append(toa3003.BODY.DRAW_BILLNO).append("|")                  // 支取单编号
                 .append(nullToEmpty(toa3003.BODY.BILL_STS_CODE)).append("|")     // 状态代码
                 .append(nullToEmpty(toa3003.BODY.BILL_STS_TITLE)).append("|")    // 状态说明
+                .append(nullToEmpty(totalAmt.toString())).append("|")               // 支取总金额
                 .append(nullToEmpty(toa3003.BODY.DETAIL_NUM)).append("|");       // 笔数
         if (DrawQryStatus.VALAID.getCode().equals(toa3003.BODY.BILL_STS_CODE)) {
             for (Toa3003.Detail detail : toa3003.BODY.DETAILS) {

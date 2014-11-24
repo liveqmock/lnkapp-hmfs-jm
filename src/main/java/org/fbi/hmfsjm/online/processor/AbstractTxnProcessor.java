@@ -38,6 +38,7 @@ public abstract class AbstractTxnProcessor extends Stdp10Processor {
             MDC.put("txnCode", txnCode);
             MDC.put("tellerId", tellerId);
             doRequest(request, response);
+            response.setHeader("rtnCode", "0000");
         } catch (Exception e) {
             response.setHeader("rtnCode", TxnRtnCode.TXN_FAILED.getCode());
             String errmsg = e.getMessage();

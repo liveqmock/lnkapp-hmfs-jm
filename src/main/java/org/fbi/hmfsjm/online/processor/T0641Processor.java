@@ -2,7 +2,7 @@ package org.fbi.hmfsjm.online.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.fbi.hmfsjm.gateway.domain.txn.Toa3004;
-import org.fbi.hmfsjm.online.service.Txn1500641Service;
+import org.fbi.hmfsjm.online.service.Txn0641Service;
 import org.fbi.linking.processor.ProcessorException;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorRequest;
 import org.fbi.linking.processor.standprotocol10.Stdp10ProcessorResponse;
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 // 支取确认
-public class T1500641Processor extends AbstractTxnProcessor {
+public class T0641Processor extends AbstractTxnProcessor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -33,7 +33,7 @@ public class T1500641Processor extends AbstractTxnProcessor {
         String txnDate = request.getHeader("txnTime");
         try {
             // 交易发起
-            Toa3004 toa = (Toa3004) new Txn1500641Service().process(tellerID, branchID, serialNo, drawNo, txnDate);
+            Toa3004 toa = (Toa3004) new Txn0641Service().process(tellerID, branchID, serialNo, drawNo, txnDate);
             response.setResponseBody(assembleStr(toa).getBytes(THIRDPARTY_SERVER_CODING));
         } catch (Exception e) {
             logger.error("[1500641][3004][hmfsjm支取确认]失败", e);
