@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scan="false" scanPeriod="10 seconds">
 
-    <property name="log.base" value="d:/linkingroot/applog/ibp"/>
+    <property name="log.base" value="d:/linkingroot/applog/hmfsjm"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -12,7 +12,8 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.base}/main.log</file>
         <encoder>
-            <pattern>===[%d{MM-dd HH:mm:ss.SSS}] [TLR:%X{tellerId}] [%thread:%relative] %-5level %logger - %n%msg%n </pattern>
+            <pattern>===[%d{MM-dd HH:mm:ss.SSS}] [TLR:%X{tellerId}] [%thread:%relative] %-5level %logger - %n%msg%n
+            </pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log.base}/history/%d{yyyy-MM-dd}.main.log</fileNamePattern>
@@ -29,7 +30,9 @@
             <appender name="FILE-${txnCode}" class="ch.qos.logback.core.rolling.RollingFileAppender">
                 <File>${log.base}/${txnCode}.log</File>
                 <layout class="ch.qos.logback.classic.PatternLayout">
-                    <pattern>===[%d{MM-dd HH:mm:ss.SSS}] [TLR:%X{tellerId}] [%thread:%relative] %-5level %logger - %n%msg%n </pattern>
+                    <pattern>===[%d{MM-dd HH:mm:ss.SSS}] [TLR:%X{tellerId}] [%thread:%relative] %-5level %logger -
+                        %n%msg%n
+                    </pattern>
                 </layout>
                 <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                     <fileNamePattern>${log.base}/history/%d{yyyy-MM-dd}.${txnCode}.log</fileNamePattern>
